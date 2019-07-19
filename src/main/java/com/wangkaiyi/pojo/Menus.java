@@ -1,16 +1,29 @@
 package com.wangkaiyi.pojo;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "t_menus")
 @Data
+@Table(name = "t_menus")
 public class Menus {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private Integer menusid;
+    @Column
     private String menusname;
+    @Column
     private String menuesurl;
-    private Integer father;
+    @Column
+    private Integer fatherid;
+    @ManyToMany(mappedBy = "menus")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Set<Roles> roles = new HashSet<>();
 }

@@ -1,15 +1,14 @@
 package com.wangkaiyi.pojo;
 
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "t_roles")
 @Data
+@Table(name = "t_roles")
 public class Roles {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,8 +16,11 @@ public class Roles {
     private Integer roleid;
     @Column
     private String rolename;
-    @OneToMany(mappedBy = "roles")
+    @ManyToMany(cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
+//    @JoinTable:配置中间表
+//    joinColumns建立在当前表在中间表的外键字段
+    @JoinTable(name = "t_roles_menus", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "menu_id"))
     @ToString.Exclude
-    private Set<UsersOneToMany> users = new HashSet<>();
-
+    @EqualsAndHashCode.Exclude
+    private Set<Menus> menus = new HashSet<>();
 }
